@@ -3,13 +3,13 @@ const fetch = require('node-fetch');
 
 suite('Add Books page', function() {
   test('Page title', async function() {
-    let res = await fetch("http://localhost:8888/add-book");
+    let res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/add-book");
     let body = await res.text();
     assert.ok(body.includes("<h1>Add New Book</h1>"));
   });
 
   test('Book HTML form', async function() {
-    let res = await fetch("http://localhost:8888/add-book");
+    let res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/add-book");
     let body = await res.text();
     
     let nameFieldFound = body.includes('<input id="name" type="text" name="name"/>');
@@ -24,7 +24,7 @@ suite('Add Books page', function() {
 
   test('Add valid book', async function() {
     let res = await fetch(
-      "http://localhost:8888/add-book",
+      "https://mdzhut200-retake-exam-test.onrender.com/add-book",
       {
         method: 'POST',
         headers: {
@@ -41,7 +41,7 @@ suite('Add Books page', function() {
 
   test('Add invalid book', async function() {
      let res = await fetch(
-      "http://localhost:8888/add-book",
+      "https://mdzhut200-retake-exam-test.onrender.com/add-book",
       {
         method: 'POST',
         headers: {
@@ -54,7 +54,7 @@ suite('Add Books page', function() {
     let errMsg = body.includes("Cannot add book. Name and author fields are required!");
     assert.ok(errMsg, "Add invalid book should display an error message");
 
-    res = await fetch("http://localhost:8888/");
+    res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/");
     body = await res.text();
 	assert.ok(body.includes("Added books: <b>3</b>"), 
 		"Add invalid book should not change the books count");
