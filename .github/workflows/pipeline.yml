@@ -30,4 +30,5 @@ jobs:
     #   run: npx playwright install
     - name: Start tests
       run: npm run test:unit
-
+    - name: Showcase student's name
+      run: echo 'mdzhut200'
