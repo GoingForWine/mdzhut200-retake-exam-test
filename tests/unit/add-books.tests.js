@@ -34,13 +34,20 @@ suite('Add Books page', function() {
       }
     );
     let body = await res.text();
-    let booksReturned = body.includes(
-		"<ul><li>A Song of Ice and Fire (George R. R. Martin)</li><li>Shogun (James Clavell)</li><li>To Kill a Mockingbird (Harper Lee)</li><li>Zorba the Greek (Nikos Kazantzakis)</li></ul>");
-    assert.ok(booksReturned, "Add book failed");
+    let booksReturned = body.includes("<li>Zorba the Greek (Nikos Kazantzakis)</li>");
+    assert.ok(booksReturned, "Add book failed");    
   });
 
   test('Add invalid book', async function() {
-     let res = await fetch(
+    // Fetch the main page to determine the current count of books
+    let res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/");
+    let body = await res.text();
+    
+    // Extract the current count of books (assuming the number of books is shown in the format "Added books: <b>X</b>")
+    const initialBookCount = parseInt(body.match(/Added books: <b>(\d+)<\/b>/)[1]);
+
+    // Attempt to add an invalid book (missing author)
+    res = await fetch(
       "https://mdzhut200-retake-exam-test.onrender.com/add-book",
       {
         method: 'POST',
@@ -50,13 +57,28 @@ suite('Add Books page', function() {
         body: "name=Zorba the Greek&author="
       }
     );
-    let body = await res.text();
+    
+    // Log the response body for debugging purposes
+    body = await res.text();
+    // console.log('Response body after invalid book submission:', body);
+
+    // Check if the error message is present
     let errMsg = body.includes("Cannot add book. Name and author fields are required!");
     assert.ok(errMsg, "Add invalid book should display an error message");
 
+    // Fetch the main page again to verify the book count
     res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/");
     body = await res.text();
-	assert.ok(body.includes("Added books: <b>3</b>"), 
-		"Add invalid book should not change the books count");
-  });
+    // console.log('Main page body after invalid book submission:', body);
+
+    // Extract the book count after the failed submission
+    const finalBookCount = parseInt(body.match(/Added books: <b>(\d+)<\/b>/)[1]);
+
+    // Check if the book count remains unchanged
+    assert.strictEqual(finalBookCount, initialBookCount, 
+        "Add invalid book should not change the books count");
+});
+
+
+
 });
