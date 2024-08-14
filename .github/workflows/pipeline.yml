@@ -29,5 +29,5 @@ jobs:
     # - name: Install playwright for testing
     #   run: npx playwright install
     - name: Start tests
-      run: npm start test:unit
+      run: npm run test:unit
 
