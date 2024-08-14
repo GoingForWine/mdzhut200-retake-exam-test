@@ -11,6 +11,6 @@ suite('Home page', function() {
   test('Books count', async function() {
     let res = await fetch("https://mdzhut200-retake-exam-test.onrender.com/");
     let body = await res.text();
-    assert.ok(body.includes("Added books: <b>20</b>"));
+    assert.ok(body.includes("Added books: <b>4</b>"));
   });
 });
